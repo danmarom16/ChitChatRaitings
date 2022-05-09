@@ -1,0 +1,36 @@
+﻿@model IEnumerable<ChitChatRaitings.Models.Feedback>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<div>
+    <a asp-action="Create">Create New</a>
+</div>
+
+@foreach (var item in Model)
+{
+
+    <div class="card text-white bg-dark " style="max-width: 20rem max-content:fit-content;">
+        <img class="card-img-top" src="/logo.png" alt="Card image cap">
+        <div class="card-body">
+            <h4 class="card-title"> Name: @Html.DisplayFor(modelItem => item.Name)</h4>
+            <h5 class="card-title">  Rate: @Html.DisplayFor(modelItem => item.Rate)</h5>
+            <p class="card-text"> Description: @Html.DisplayFor(modelItem => item.Description)</p>
+            <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+            <a asp-action="Details" asp-route-id="@item.Id">Details</a>
+            <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+}
+
