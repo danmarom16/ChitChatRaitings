@@ -6,6 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<ChitChatRaitingsContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("ChitChatRaitingsContext") ?? throw new InvalidOperationException("Connection string 'ChitChatRaitingsContext' not found.")));
 
+
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 

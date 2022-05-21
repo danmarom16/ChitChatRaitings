@@ -1,36 +1,40 @@
-﻿#nullable disable
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
+using ChitChatRaitings.Data;
 using ChitChatRaitings.Models;
-using ChitChatRaitings.Services;
 
 namespace ChitChatRaitings.Controllers
 {
     public class FeedbacksController : Controller
     {
-        private IFeedbackService _service;
+        private readonly ChitChatRaitingsContext _context;
 
-        public FeedbacksController()
+        public FeedbacksController(ChitChatRaitingsContext context)
         {
-            _service = new FeedbackService();
+            _context = context;
         }
 
-
         // GET: Feedbacks
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View(_service.GetAllFeedbacks());
+            return View(await _context.Feedback.ToListAsync());
         }
 
         // GET: Feedbacks/Details/5
-        public IActionResult Details(int id)
+        public async Task<IActionResult> Details(int? id)
         {
+            if (id == null || _context.Feedback == null)
+            {
+                return NotFound();
+            }
 
-            var feedback = _service.GetFeedback(id);
+            var feedback = await _context.Feedback
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (feedback == null)
             {
                 return NotFound();
@@ -46,23 +50,30 @@ namespace ChitChatRaitings.Controllers
         }
 
         // POST: Feedbacks/Create
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create([Bind("Id,Name,Rate,Description")] Feedback feedback)
+        public async Task<IActionResult> Create([Bind("Id,Name,Rate,Description")] Feedback feedback)
         {
             if (ModelState.IsValid)
             {
-                _service.Create(feedback.Rate, feedback.Description, feedback.Name);
+                _context.Add(feedback);
+                await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(feedback);
         }
 
         // GET: Feedbacks/Edit/5
-        public IActionResult Edit(int id)
+        public async Task<IActionResult> Edit(int? id)
         {
+            if (id == null || _context.Feedback == null)
+            {
+                return NotFound();
+            }
 
-            var feedback = _service.GetFeedback(id);
+            var feedback = await _context.Feedback.FindAsync(id);
             if (feedback == null)
             {
                 return NotFound();
@@ -71,8 +82,11 @@ namespace ChitChatRaitings.Controllers
         }
 
         // POST: Feedbacks/Edit/5
-        [HttpPost, ActionName("Edit")]
-        public IActionResult EditConfirmed(int id, [Bind("Id,Name,Rate,Description")] Feedback feedback)
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Rate,Description")] Feedback feedback)
         {
             if (id != feedback.Id)
             {
@@ -81,16 +95,37 @@ namespace ChitChatRaitings.Controllers
 
             if (ModelState.IsValid)
             {
-                _service.EditFeedback(feedback.Id, feedback.Rate, feedback.Description);
+                try
+                {
+                    _context.Update(feedback);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!FeedbackExists(feedback.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
                 return RedirectToAction(nameof(Index));
             }
             return View(feedback);
         }
 
         // GET: Feedbacks/Delete/5
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int? id)
         {
-            var feedback = _service.GetFeedback(id);
+            if (id == null || _context.Feedback == null)
+            {
+                return NotFound();
+            }
+
+            var feedback = await _context.Feedback
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (feedback == null)
             {
                 return NotFound();
@@ -101,11 +136,26 @@ namespace ChitChatRaitings.Controllers
 
         // POST: Feedbacks/Delete/5
         [HttpPost, ActionName("Delete")]
-        public IActionResult DeleteConfirmed(int id)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            _service.DeleteFeedback(id);
+            if (_context.Feedback == null)
+            {
+                return Problem("Entity set 'ChitChatRaitingsContext.Feedback'  is null.");
+            }
+            var feedback = await _context.Feedback.FindAsync(id);
+            if (feedback != null)
+            {
+                _context.Feedback.Remove(feedback);
+            }
+            
+            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
+        private bool FeedbackExists(int id)
+        {
+          return (_context.Feedback?.Any(e => e.Id == id)).GetValueOrDefault();
+        }
     }
 }

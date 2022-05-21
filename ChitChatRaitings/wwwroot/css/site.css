@@ -79,13 +79,16 @@ body {
 }
 
 .creation-form {
-    background-color: #01252c;
+    text-decoration:white;
     padding: 50px 45px;
+    background-color: #01252c;
     border-radius: 10px;
     animation: transitionIn 0.75s;
     box-shadow: -1px 4px 20px -6px rgba(0, 0, 0, 0.7);
     min-height: 400px;
     justify-content: center;
+    flex: 0 0 auto;
+    width: 33.33%;
 }
 
 .create-button {
@@ -108,7 +111,8 @@ body {
     flex-direction: column;
     width: 280px;
     background-color: #01252c;
-    justify-self:center
+    justify-self:center;
+    padding: 0 20px;
 
 }
 
@@ -162,8 +166,17 @@ input {
 }
 
 .details {
-    border: 10px;
-    border-color: white;
-    justify-content: center;
-    color:white;
+    padding: 50px 45px;
+    background-color: #01252c;
+    border-radius: 10px;
+    animation: transitionIn 0.75s;
+    box-shadow: -1px 4px 20px -6px rgba(0, 0, 0, 0.7);
+}
+
+.delete {
+    padding: 50px 45px;
+    background-color: #01252c;
+    border-radius: 10px;
+    animation: transitionIn 0.75s;
+    box-shadow: -1px 4px 20px -6px rgba(0, 0, 0, 0.7);
 }

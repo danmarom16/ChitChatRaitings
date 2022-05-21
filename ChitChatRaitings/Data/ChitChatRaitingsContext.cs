@@ -1,5 +1,4 @@
-﻿#nullable disable
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -15,6 +14,6 @@ namespace ChitChatRaitings.Data
         {
         }
 
-        public DbSet<ChitChatRaitings.Models.Feedback> Feedback { get; set; }
+        public DbSet<ChitChatRaitings.Models.Feedback>? Feedback { get; set; }
     }
 }
