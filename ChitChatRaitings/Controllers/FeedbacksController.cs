@@ -25,6 +25,36 @@ namespace ChitChatRaitings.Controllers
             return View(await _context.Feedback.ToListAsync());
         }
 
+
+        // GET: Feedbacks + Search bar
+        public async Task<IActionResult> Search()
+        {
+            return View(await _context.Feedback.ToListAsync());
+        }
+
+
+        // POST: Feedbacks + Search bar
+        [HttpPost]
+        public async Task<IActionResult> Search(string query)
+        {
+            var q =from Feedback in _context.Feedback
+                   where Feedback.Name.Contains(query)
+                   select Feedback;
+                                    
+            return View(await q.ToListAsync());
+        }
+
+
+        public async Task<IActionResult> Search2(string query)
+        {
+            var q = from Feedback in _context.Feedback
+                    where Feedback.Name.Contains(query)
+                    select Feedback;
+
+            return Json(await q.ToListAsync());
+        }
+
+
         // GET: Feedbacks/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -60,7 +90,7 @@ namespace ChitChatRaitings.Controllers
             {
                 _context.Add(feedback);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Search));
             }
             return View(feedback);
         }
@@ -111,7 +141,7 @@ namespace ChitChatRaitings.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Search));
             }
             return View(feedback);
         }
@@ -150,7 +180,7 @@ namespace ChitChatRaitings.Controllers
             }
             
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Search));
         }
 
         private bool FeedbackExists(int id)
