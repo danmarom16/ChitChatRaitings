@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using ChitChatRaitings.Data;
 using ChitChatRaitings.Models;
 
+
 namespace ChitChatRaitings.Controllers
 {
     public class FeedbacksController : Controller
@@ -29,29 +30,61 @@ namespace ChitChatRaitings.Controllers
         // GET: Feedbacks + Search bar
         public async Task<IActionResult> Search()
         {
+            double rateSum = 0;
+            double numOfElem = 0;
+            double averageRate;
+            var averageString = "";
+            foreach (var feedback in _context.Feedback)
+            {
+                rateSum += feedback.Rate;
+                numOfElem++;
+            }
+            if (numOfElem == 0)
+            {
+                averageString = "Does not have any ratings yet... please suck a dick first";
+            }
+            else
+            {
+                averageRate = rateSum / numOfElem;
+                averageString = System.Math.Round(averageRate, 2).ToString();
+            }
+            ViewBag.AverageString = averageString;
+
             return View(await _context.Feedback.ToListAsync());
         }
-
 
         // POST: Feedbacks + Search bar
         [HttpPost]
         public async Task<IActionResult> Search(string query)
         {
-            var q =from Feedback in _context.Feedback
-                   where Feedback.Name.Contains(query)
-                   select Feedback;
-                                    
-            return View(await q.ToListAsync());
+            if (query == null)
+            {
+                return Json(await _context.Feedback.ToListAsync());
+            }
+            else
+            {
+                var q = from Feedback in _context.Feedback
+                        where Feedback.Description.Contains(query)
+                        select Feedback;
+                return Json(await q.ToListAsync());
+            }
         }
 
 
         public async Task<IActionResult> Search2(string query)
         {
-            var q = from Feedback in _context.Feedback
-                    where Feedback.Name.Contains(query)
-                    select Feedback;
+            if(query == null)
+            {
+                return Json(await _context.Feedback.ToListAsync());
+            }
+            else
+            {
+                var q = from Feedback in _context.Feedback
+                        where Feedback.Description.Contains(query)
+                        select Feedback;
 
-            return Json(await q.ToListAsync());
+                return Json(await q.ToListAsync());
+            }
         }
 
 

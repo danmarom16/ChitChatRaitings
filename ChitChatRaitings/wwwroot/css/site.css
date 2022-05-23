@@ -70,14 +70,6 @@ body {
     background-color: #01252c;
 }
 
-
-.title {
-    color: rgb(237, 239, 231);
-    text-align: center;
-    font-weight: 650;
-    font-size: xx-large;
-}
-
 .creation-form {
     text-decoration:white;
     padding: 50px 45px;
@@ -179,4 +171,27 @@ input {
     border-radius: 10px;
     animation: transitionIn 0.75s;
     box-shadow: -1px 4px 20px -6px rgba(0, 0, 0, 0.7);
+}
+
+.average-rate {
+    color: rgb(237, 239, 231);
+    text-align: center;
+    font-weight: 650;
+    font-size: xx-large;
+    border: 2px solid rgb(3, 50, 59);
+    background-image: linear-gradient(#054552, #01252c, #01252c);
+    width: fit-content;
+    margin: auto;
+    width: 50%;
+    border-radius: 5px;
+    padding:10px;
+}
+
+.search {
+    padding:10px;
+    width: fit-content;
+    margin: auto;
+    width: 50%;
+    text-align: center;
+
 }

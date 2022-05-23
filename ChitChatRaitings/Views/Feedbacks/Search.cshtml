@@ -5,14 +5,25 @@
 }
 
 
+<form class="search" asp-action="Search">
+    <input name="query" id="search" />
+    <input type="submit" value="Search" />
+</form>
+
+<h1 class="average-rate" style="color:white">
+    <div >
+        Average Rate:
+    </div>
+    <div>
+          ⭐  @ViewBag.AverageString  ⭐
+    </div>
+
+</h1>
+
+
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-
-<form asp-action="Search">
-    <input name="query" id="search"/>
-    <input type="submit" value="Search" />
-</form>
 
 <table class="table feedback-table">
     <thead>
@@ -30,49 +41,50 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Rate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Rate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
 
 @section Scripts {
-    
-
-    <script type="text/html" id="template">
-         <tr>
-            <td>
-                {name}
-            </td>
-            <td>
-                {rate}
-            </td>
-            <td>
-                {description}
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="{id}">Edit</a> |
-                <a asp-action="Details" asp-route-id="{id}">Details</a> |
-                <a asp-action="Delete" asp-route-id="{id}">Delete</a>
-            </td>
-        </tr>
-    </script>
 
 
-    <script src="~/js/search.js"></script>
+<script type="text/html" id="template">
+     <tr>
+        <td>
+            {name}
+        </td>
+        <td>
+            {rate}
+        </td>
+        <td>
+            {description}
+        </td>
+        <td>
+            <a asp-action="Edit" asp-route-id="{id}">Edit</a> |
+            <a asp-action="Details" asp-route-id="{id}">Details</a> |
+            <a asp-action="Delete" asp-route-id="{id}">Delete</a>
+        </td>
+    </tr>
+</script>
+
+<script src="~/js/search.js"></script>
+
 }
