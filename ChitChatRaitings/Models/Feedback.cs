@@ -11,5 +11,7 @@ namespace ChitChatRaitings.Models
         public int Rate { get; set; }
         public string? Description { get; set; }
 
+        public DateTime? CreatedDate { get; set; }
+
     }
 }

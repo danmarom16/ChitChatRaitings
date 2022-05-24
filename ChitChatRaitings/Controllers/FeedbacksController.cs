@@ -41,7 +41,7 @@ namespace ChitChatRaitings.Controllers
             }
             if (numOfElem == 0)
             {
-                averageString = "Does not have any ratings yet... please suck a dick first";
+                averageString = "Does not have any ratings yet...";
             }
             else
             {
@@ -117,10 +117,15 @@ namespace ChitChatRaitings.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Rate,Description")] Feedback feedback)
+        public async Task<IActionResult> Create([Bind("Id,Name,Rate,Description,CreatedDate")] Feedback feedback)
         {
             if (ModelState.IsValid)
             {
+                feedback.CreatedDate = DateTime.Now;
+                if(feedback.Description == null)
+                {
+                    feedback.Description = "";
+                }
                 _context.Add(feedback);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Search));
@@ -149,7 +154,7 @@ namespace ChitChatRaitings.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Rate,Description")] Feedback feedback)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Rate,Description,CreatedDate")] Feedback feedback)
         {
             if (id != feedback.Id)
             {
@@ -160,6 +165,7 @@ namespace ChitChatRaitings.Controllers
             {
                 try
                 {
+                    feedback.CreatedDate = DateTime.Now;
                     _context.Update(feedback);
                     await _context.SaveChangesAsync();
                 }

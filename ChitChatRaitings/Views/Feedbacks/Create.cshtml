@@ -23,6 +23,10 @@
             <input asp-for="Description" />
             <span asp-validation-for="Description" class="text-danger"></span>
         </div>
+        <div class="form-input" style="display:none">
+            <label asp-for="CreatedDate"></label>
+            <input asp-for="CreatedDate" />
+        </div>
         <div class="form-input">
             <input type="submit" value="Create" class="btn btn-light" />
         </div>
